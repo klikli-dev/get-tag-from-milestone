@@ -1,0 +1,13 @@
+{
+  "name": "get-tag-from-milestone",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "author": "klikli-dev",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.6.0",
+    "@actions/github": "^5.0.0",
+    "@octokit/rest": "^18.12.0"
+  }
+}

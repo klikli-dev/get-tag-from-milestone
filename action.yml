@@ -1,0 +1,8 @@
+name: 'Get Tag from Milestone'
+description: 'Gets a matching tag for a milestone'
+outputs:
+  tag:
+    description: 'Matching tag'
+runs:
+  using: 'node12'
+  main: 'index.js'
