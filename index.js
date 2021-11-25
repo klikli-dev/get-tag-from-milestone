@@ -22,7 +22,7 @@ octokit.rest.repos.listTags({
     owner,
     repo,
 }).then(tags => {
-    const tag = tags.find(t => doesVersionMatch(milestone, t));
-    core.setOutput("tag", tag);
+    const tag = tags.data.find(t => doesVersionMatch(milestone, t.name));
+    core.setOutput("tag", tag.name);
 });
 
