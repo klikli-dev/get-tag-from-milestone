@@ -10,7 +10,7 @@ const milestone = github.context.payload.milestone.title;
 function doesVersionMatch(milestone, tag) {
     //milestone version: "1.16.5-1.20.0" (historically "1.20.0")
     //tag version: "release/v1.16.5-1.20.0"
-    const milestoneVersion = milestone.title.match(/\d+\.\d+\.\d+/g);
+    const milestoneVersion = milestone.match(/\d+\.\d+\.\d+/g);
     const tagVersion = tag.match(/\d+\.\d+\.\d+/g);
     console.log("doesVersionMatch: ", milestoneVersion, tagVersion);
 
