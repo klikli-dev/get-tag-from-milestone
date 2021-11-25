@@ -18,11 +18,11 @@ function doesVersionMatch(milestone, tag) {
     return milestoneVersion !== null && tagVersion !== null && milestoneVersion[0] === tagVersion[0] && milestoneVersion[1] === tagVersion[1];
 }
 
-const tags = await octokit.rest.repos.listTags({
+octokit.rest.repos.listTags({
     owner,
     repo,
+}).then(tags => {
+    const tag = tags.find(t => doesVersionMatch(milestone, t));
+    core.setOutput("tag", tag);
 });
 
-const tag = tags.find(t => doesVersionMatch(milestone, t));
-
-core.setOutput("tag", tag);
