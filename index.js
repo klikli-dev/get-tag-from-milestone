@@ -1,8 +1,10 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { Octokit } = require("@octokit/rest");
+const {paginateRest, composePaginateRest } = require("@octokit/plugin-paginate-rest");
+const MyOctokit  = Octokit.plugin(paginateRest);
+const octokit = new MyOctokit({ auth: core.getInput("github-token"), baseUrl: 'https://api.github.com' });
 
-const octokit = new Octokit({ auth: core.getInput("github-token"), baseUrl: 'https://api.github.com' });
 const owner = github.context.payload.repository.owner.login;
 const repo = github.context.payload.repository.name;
 const milestone = github.context.payload.milestone.title;
@@ -18,11 +20,13 @@ function doesVersionMatch(milestone, tag) {
     return milestoneVersion !== null && tagVersion !== null && milestoneVersion[0] === tagVersion[0] && milestoneVersion[1] === tagVersion[1];
 }
 
-octokit.rest.repos.listTags({
-    owner,
-    repo,
-}).then(tags => {
-    const tag = tags.data.find(t => doesVersionMatch(milestone, t.name));
+(async() => {
+    const tags = await octokit.paginate(octokit.rest.repos.listTags, {
+        owner,
+        repo,
+        per_page: 100
+    },
+    response => response.data);
+    const tag = tags.find(t => doesVersionMatch(milestone, t.name));
     core.setOutput("tag", tag.name);
-});
-
+})();
